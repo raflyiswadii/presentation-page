@@ -8,16 +8,17 @@ export function cn(...inputs: ClassValue[]) {
 
 export function SlideContainer({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <div className={cn("w-full h-full flex flex-col justify-center", className)}>
+    <div className={cn("w-full h-full flex flex-col p-4 md:p-8 lg:p-12", className)}>
       {children}
     </div>
   );
 }
 
-export function SlideCard({ children, className }: { children: React.ReactNode, className?: string }) {
+// Swiss Grid Wrapper - No rounded corners, solid borders
+export function SwissGrid({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
     <div className={cn(
-      "w-full h-full bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 flex flex-col shadow-2xl",
+      "w-full h-full bg-background flex flex-col swiss-border",
       className
     )}>
       {children}
@@ -25,11 +26,19 @@ export function SlideCard({ children, className }: { children: React.ReactNode, 
   );
 }
 
-export function SlideTitle({ title, subtitle }: { title: string, subtitle?: string }) {
+// Header specifically for the Swiss Layout
+export function SwissHeader({ title, subtitle, rightElement }: { title: string, subtitle?: string, rightElement?: React.ReactNode }) {
   return (
-    <div className="mb-8 border-b border-slate-700/50 pb-6">
-      <h2 className="text-3xl font-bold text-white tracking-tight">{title}</h2>
-      {subtitle && <p className="text-slate-400 mt-2 text-lg">{subtitle}</p>}
+    <div className="w-full flex justify-between items-center px-6 py-4 swiss-border-b">
+      <div className="flex gap-4 items-baseline">
+        <h2 className="text-xl md:text-2xl font-bold uppercase tracking-tighter text-foreground">{title}</h2>
+        {subtitle && <p className="text-graphite font-mono text-sm hidden md:block">{subtitle}</p>}
+      </div>
+      {rightElement && (
+        <div className="font-mono text-sm text-foreground">
+          {rightElement}
+        </div>
+      )}
     </div>
   );
 }

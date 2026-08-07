@@ -1,52 +1,54 @@
 import React from "react";
-import { SlideContainer, SlideCard } from "../ui/SlideComponents";
+import { SlideContainer, SwissGrid } from "../ui/SlideComponents";
 import { reportData } from "@/lib/data";
-import { Briefcase, MapPin, User, Calendar } from "lucide-react";
 
 export default function Slide1Intro() {
   const { header } = reportData;
   
   return (
     <SlideContainer>
-      <SlideCard className="items-center justify-center text-center p-16 border-t-4 border-t-gold relative overflow-hidden">
-        {/* Subtle background icon */}
-        <Briefcase className="absolute -right-20 -bottom-20 w-96 h-96 text-slate-800/30 -rotate-12 pointer-events-none" />
+      <SwissGrid className="grid grid-cols-1 md:grid-cols-12 grid-rows-6">
         
-        <div className="z-10 flex flex-col items-center">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold to-yellow-600 flex items-center justify-center mb-8 shadow-lg shadow-gold/20">
-            <User size={40} className="text-slate-900" />
-          </div>
-          
-          <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 tracking-tight">
-            {header.title}
+        {/* Top Header - spans full width */}
+        <div className="md:col-span-12 row-span-1 swiss-border-b flex flex-col justify-center p-6">
+          <p className="font-mono text-graphite uppercase tracking-widest text-xs md:text-sm">
+            {header.period} — {header.semester}
+          </p>
+        </div>
+        
+        {/* Main Title Area */}
+        <div className="md:col-span-8 row-span-4 swiss-border-r swiss-border-b flex flex-col justify-end p-6 md:p-12 relative overflow-hidden group">
+          <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-bold uppercase tracking-tighter leading-[0.85] text-foreground z-10 transition-transform duration-700 origin-bottom-left group-hover:scale-105 break-words">
+            {header.title.split(' ')[0]}<br />
+            <span className="text-hatiga-green">{header.title.split(' ')[1]}</span>.
           </h1>
-          
-          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-slate-800 border border-slate-700 text-gold font-medium mb-12">
-            <Calendar size={18} />
-            <span className="text-xl">{header.semester} ({header.period})</span>
+        </div>
+        
+        {/* Author Info Area */}
+        <div className="md:col-span-4 row-span-4 swiss-border-b bg-foreground text-background flex flex-col justify-between p-6 md:p-12">
+          <div className="font-mono text-sm uppercase tracking-widest opacity-70">
+            Disusun Oleh
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl mt-8">
-            <div className="flex flex-col items-center p-6 rounded-2xl bg-slate-800/50 border border-slate-700/50">
-              <Briefcase size={28} className="text-slate-400 mb-3" />
-              <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold">Divisi</p>
-              <p className="text-2xl font-bold text-white mt-1">{header.division}</p>
-            </div>
-            
-            <div className="flex flex-col items-center p-6 rounded-2xl bg-slate-800/50 border border-slate-700/50">
-              <MapPin size={28} className="text-slate-400 mb-3" />
-              <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold">Area</p>
-              <p className="text-2xl font-bold text-white mt-1">{header.area}</p>
-            </div>
-            
-            <div className="flex flex-col items-center p-6 rounded-2xl bg-slate-800/50 border border-slate-700/50 ring-1 ring-gold/30">
-              <User size={28} className="text-gold mb-3" />
-              <p className="text-sm text-gold uppercase tracking-wider font-semibold">Disusun Oleh</p>
-              <p className="text-2xl font-bold text-white mt-1">{header.author}</p>
-            </div>
+          <div className="mt-auto">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase tracking-tighter leading-none mb-4 break-words">
+              {header.author}
+            </h2>
           </div>
         </div>
-      </SlideCard>
+        
+        {/* Footer Info Area */}
+        <div className="md:col-span-6 row-span-1 swiss-border-r flex items-center p-6">
+          <div className="font-bold text-xl uppercase tracking-tighter">
+            Divisi {header.division}
+          </div>
+        </div>
+        <div className="md:col-span-6 row-span-1 flex items-center p-6 bg-hatiga-green text-background">
+          <div className="font-bold text-xl uppercase tracking-tighter text-background">
+            Area {header.area}
+          </div>
+        </div>
+        
+      </SwissGrid>
     </SlideContainer>
   );
 }

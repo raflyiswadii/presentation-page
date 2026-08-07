@@ -1,23 +1,102 @@
 "use client";
 
 import React from "react";
-import { SlideContainer, SlideCard, SlideTitle } from "../ui/SlideComponents";
+import { SlideContainer, SwissGrid, SwissHeader } from "../ui/SlideComponents";
 import { reportData } from "@/lib/data";
+import { CountingNumber } from "../ui/CountingNumber";
 import { 
   ComposedChart, 
   Bar, 
   Line, 
+  Scatter,
   XAxis, 
   YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  Legend, 
-  ResponsiveContainer 
+  ResponsiveContainer,
+  Tooltip
 } from "recharts";
-import { TrendingUp, Target, Award } from "lucide-react";
+import { motion } from "framer-motion";
+
+const CustomAnimatedScatterLabel = (props: any) => {
+  const { cx, cy, payload } = props;
+  const percentage = payload.percentage;
+  
+  return (
+    <CountingNumber 
+      as={motion.text}
+      initial={{ y: cy + 50, opacity: 0 }}
+      animate={{ y: cy - 10, opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
+      x={cx} 
+      fill="var(--color-foreground)" 
+      textAnchor="middle" 
+      fontFamily="var(--font-geist-mono)"
+      fontSize={12}
+      fontWeight="bold"
+      value={percentage} 
+      suffix="%" 
+      duration={1.5}
+      style={{
+        paintOrder: "stroke fill",
+        stroke: "var(--color-background)",
+        strokeWidth: 4,
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      }}
+    />
+  );
+};
+
+const GlassmorphismTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    const formatRupiah = (val: number) => {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(val);
+    };
+
+    return (
+      <div className="bg-background/60 backdrop-blur-md border border-hatiga-green/30 text-foreground p-3 md:p-4 rounded-lg shadow-xl min-w-[200px] z-50 relative">
+        <p className="font-bold text-sm uppercase tracking-widest border-b border-hatiga-green/20 pb-2 mb-3">{label}</p>
+        <div className="flex flex-col gap-2 font-mono text-xs">
+          <div className="flex justify-between items-center gap-4">
+            <span className="opacity-70">Target</span>
+            <span className="font-bold text-hatiga-green">{formatRupiah(data.target)}</span>
+          </div>
+          <div className="flex justify-between items-center gap-4">
+            <span className="opacity-70">Pencapaian</span>
+            <span className="font-bold">{formatRupiah(data.achieved)}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+const CustomBar = (props: any) => {
+  const { x, y, width, height } = props;
+  const bottomY = y + height;
+  
+  return (
+    <g>
+      <motion.rect
+        x={x}
+        width={width}
+        initial={{ y: bottomY, height: 0 }}
+        animate={{ y: y, height: height }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        fill="var(--color-foreground)"
+      />
+    </g>
+  );
+};
 
 export default function Slide2Omset() {
-  const { omset, header } = reportData;
+  const { omset } = reportData;
   
   const formatRupiah = (value: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -29,148 +108,112 @@ export default function Slide2Omset() {
   };
 
   const formatShortRupiah = (value: number) => {
-    if (value >= 1000000000) {
-      return `Rp ${(value / 1000000000).toFixed(1)}M`;
-    }
-    if (value >= 1000000) {
-      return `Rp ${(value / 1000000).toFixed(0)}Jt`;
-    }
-    return `Rp ${value}`;
+    if (value >= 1000000000) return `${(value / 1000000000).toFixed(1)}M`;
+    if (value >= 1000000) return `${(value / 1000000).toFixed(0)}Jt`;
+    return `${value}`;
   };
 
+  // Custom tooltips don't fit the brutalist aesthetic well unless highly customized.
+  // We'll rely on the stark visual comparison.
+  
   return (
     <SlideContainer>
-      <SlideCard>
-        <SlideTitle 
-          title="Pencapaian Omset Individu" 
-          subtitle={`Periode: ${header.period}`} 
+      <SwissGrid className="flex flex-col">
+        <SwissHeader 
+          title="Pencapaian Omset" 
+          subtitle="Semester 1"
+          rightElement={<span>IDR / 2026</span>}
         />
         
-        {/* Top Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-slate-800/80 rounded-2xl p-6 border border-slate-700/50 flex flex-col">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-blue-500/20 text-blue-400 rounded-lg">
-                <Target size={20} />
-              </div>
-              <span className="text-slate-400 font-medium">Total Target</span>
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-12">
+          
+          {/* Left Data Column */}
+          <div className="md:col-span-4 swiss-border-r flex flex-col min-h-0">
+            <div className="flex-1 p-4 md:p-6 lg:p-8 swiss-border-b flex flex-col justify-center min-h-0">
+              <p className="font-mono text-xs text-graphite uppercase mb-1">Total Target</p>
+              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tighter font-mono truncate selectable">
+                <CountingNumber value={omset.targetTotal} formatString="rupiah" duration={1.5} />
+              </h3>
             </div>
-            <p className="text-2xl font-bold text-white mt-auto">
-              {formatRupiah(omset.targetTotal)}
-            </p>
+            
+            <div className="flex-1 p-4 md:p-6 lg:p-8 swiss-border-b flex flex-col justify-center bg-foreground text-background min-h-0">
+              <p className="font-mono text-xs uppercase opacity-70 mb-1">Pencapaian</p>
+              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tighter font-mono text-hatiga-green truncate selectable">
+                <CountingNumber value={omset.semester1} formatString="rupiah" duration={1.5} />
+              </h3>
+            </div>
+            
+            <div className="flex-[2] p-4 md:p-6 lg:p-8 flex flex-col justify-center items-start overflow-hidden min-h-0">
+              <p className="font-mono text-xs text-graphite uppercase mb-2">Persentase Target</p>
+              <h1 className="text-6xl md:text-7xl lg:text-[7rem] font-bold text-hatiga-green leading-none tracking-tighter -ml-1 selectable">
+                <CountingNumber value={omset.percentage} suffix="%" duration={1.5} />
+              </h1>
+            </div>
           </div>
           
-          <div className="bg-slate-800/80 rounded-2xl p-6 border border-slate-700/50 flex flex-col relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gold/5 rounded-bl-full pointer-events-none" />
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-gold/20 text-gold rounded-lg">
-                <TrendingUp size={20} />
+          {/* Right Chart Column */}
+          <div className="md:col-span-8 p-4 md:p-6 lg:p-12 flex flex-col min-h-0">
+            <div className="flex flex-wrap justify-between items-end mb-6 gap-4">
+              <h3 className="text-xl md:text-2xl font-bold uppercase tracking-tighter">Tren Bulanan</h3>
+              <div className="flex items-center gap-4 font-mono text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-foreground"></div>
+                  <span>Pencapaian</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-[2px] bg-hatiga-green"></div>
+                  <span>Target ({formatShortRupiah(omset.targetPerMonth)})</span>
+                </div>
               </div>
-              <span className="text-slate-400 font-medium">Pencapaian (Sem 1)</span>
             </div>
-            <p className="text-2xl font-bold text-white mt-auto">
-              {formatRupiah(omset.semester1)}
-            </p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-gold/20 to-slate-800 rounded-2xl p-6 border border-gold/30 flex flex-col relative overflow-hidden">
-            <div className="absolute right-4 bottom-4 opacity-20">
-              <Award size={64} className="text-gold" />
+            
+            <div className="flex-1 min-h-0 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart data={omset.monthly} margin={{ top: 40, right: 0, bottom: 20, left: 0 }}>
+                  <XAxis 
+                    dataKey="month" 
+                    axisLine={true}
+                    tickLine={false}
+                    tick={{ fontFamily: 'var(--font-geist-mono)', fontSize: 10, fill: 'var(--color-foreground)' }}
+                    dy={16}
+                    height={60}
+                    tickMargin={10}
+                    stroke="var(--color-foreground)"
+                  />
+                  <Tooltip 
+                    content={<GlassmorphismTooltip />} 
+                    cursor={{ fill: 'var(--color-hatiga-green)', opacity: 0.1 }}
+                  />
+                  {/* Brutalist design: no Y-axis labels, we rely on the visual scale */}
+                  <Line 
+                    type="monotone" 
+                    dataKey="target" 
+                    stroke="var(--color-hatiga-green)" 
+                    strokeWidth={3}
+                    strokeDasharray="10 8"
+                    dot={{ strokeWidth: 3, r: 5, fill: "var(--color-background)", stroke: "var(--color-hatiga-green)" }}
+                    activeDot={{ r: 8, fill: "var(--color-hatiga-green)", stroke: "var(--color-background)", strokeWidth: 2 }}
+                    isAnimationActive={true}
+                    animationDuration={1500}
+                  />
+                  <Bar 
+                    dataKey="achieved" 
+                    fill="var(--color-foreground)" 
+                    isAnimationActive={false}
+                    shape={<CustomBar />}
+                  />
+                  <Scatter 
+                    dataKey="achieved" 
+                    shape={<CustomAnimatedScatterLabel />} 
+                    isAnimationActive={false}
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
             </div>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-gold font-medium">Persentase Pencapaian</span>
-            </div>
-            <div className="mt-auto flex items-end gap-2">
-              <p className="text-5xl font-extrabold text-gold">{omset.percentage}%</p>
-              <p className="text-sm text-slate-300 pb-1">dari Total Target</p>
-            </div>
+            
           </div>
         </div>
-
-        {/* Chart Section */}
-        <div className="flex-1 min-h-[300px] w-full bg-slate-900/50 rounded-2xl p-6 border border-slate-800">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-semibold text-white">Tren Pencapaian per Bulan</h3>
-            <div className="px-3 py-1 bg-slate-800 rounded-full text-xs font-medium text-slate-400">
-              Target per bulan: {formatShortRupiah(omset.targetPerMonth)}
-            </div>
-          </div>
-          
-          <div className="w-full h-[calc(100%-40px)]">
-            <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart
-                data={omset.monthly}
-                margin={{ top: 20, right: 20, bottom: 0, left: 20 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-                <XAxis 
-                  dataKey="month" 
-                  stroke="#94a3b8" 
-                  tick={{ fill: '#94a3b8', fontSize: 12 }} 
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis 
-                  yAxisId="left"
-                  tickFormatter={formatShortRupiah} 
-                  stroke="#94a3b8" 
-                  tick={{ fill: '#94a3b8', fontSize: 12 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis 
-                  yAxisId="right" 
-                  orientation="right" 
-                  tickFormatter={(val) => `${val}%`} 
-                  stroke="#94a3b8" 
-                  tick={{ fill: '#94a3b8', fontSize: 12 }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Tooltip 
-                  cursor={{ fill: '#1e293b' }}
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', color: '#f8fafc' }}
-                  formatter={(value: any, name: any) => {
-                    if (name === "Pencapaian") return [formatRupiah(value as number), name];
-                    if (name === "Target") return [formatRupiah(value as number), name];
-                    return [`${value}%`, name];
-                  }}
-                />
-                <Legend wrapperStyle={{ paddingTop: '20px' }} />
-                
-                <Bar 
-                  yAxisId="left" 
-                  dataKey="achieved" 
-                  name="Pencapaian" 
-                  fill="#3b82f6" 
-                  radius={[4, 4, 0, 0]} 
-                  barSize={40}
-                />
-                <Line 
-                  yAxisId="left" 
-                  type="monotone" 
-                  dataKey="target" 
-                  name="Target" 
-                  stroke="#eab308" 
-                  strokeWidth={3}
-                  strokeDasharray="5 5"
-                  dot={false}
-                />
-                <Line 
-                  yAxisId="right" 
-                  type="monotone" 
-                  dataKey="percentage" 
-                  name="% Pencapaian" 
-                  stroke="#10b981" 
-                  strokeWidth={2}
-                  dot={{ fill: '#10b981', r: 4, strokeWidth: 2, stroke: '#0f172a' }}
-                  activeDot={{ r: 6 }}
-                />
-              </ComposedChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </SlideCard>
+      </SwissGrid>
     </SlideContainer>
   );
 }

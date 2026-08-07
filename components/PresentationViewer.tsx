@@ -3,7 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { reportData } from "@/lib/data";
 
+import Image from "next/image";
 import Slide1Intro from "./slides/Slide1Intro";
 import Slide2Omset from "./slides/Slide2Omset";
 import Slide3NewCustomers from "./slides/Slide3NewCustomers";
@@ -19,6 +21,11 @@ const slides = [
   <Slide5Churn key="s5" />,
   <Slide6Highlight key="s6" />
 ];
+
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset: number, velocity: number) => {
+  return Math.abs(offset) * velocity;
+};
 
 export default function PresentationViewer() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -48,103 +55,102 @@ export default function PresentationViewer() {
   }, [currentSlide]);
 
   const variants = {
-    enter: (direction: number) => {
-      return {
-        x: direction > 0 ? 1000 : -1000,
-        opacity: 0
-      };
-    },
+    enter: (direction: number) => ({
+      x: direction > 0 ? "100%" : "-100%",
+      opacity: 1
+    }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1
     },
-    exit: (direction: number) => {
-      return {
-        zIndex: 0,
-        x: direction < 0 ? 1000 : -1000,
-        opacity: 0
-      };
-    }
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? "100%" : "-100%",
+      opacity: 1
+    })
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50 flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center relative overflow-hidden">
       
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/10 blur-[100px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-gold/10 blur-[100px]" />
+      {/* Global Header */}
+      <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-start z-20 pointer-events-none text-foreground">
+        <div className="flex gap-4 items-center">
+          <Image src="/logo-icon.jpg" alt="Hatiga Logo" width={48} height={48} className="rounded-full shadow-sm" />
+          <h1 className="font-bold uppercase tracking-tighter text-xl leading-tight mt-1">Laporan<br/>Penjualan.</h1>
+        </div>
+        <div className="text-right font-mono text-sm uppercase mt-1">
+          {reportData.header.division} Div<br/>
+          {reportData.header.area}
+        </div>
       </div>
 
       {/* Main Slide Area */}
-      <div className="relative w-full max-w-6xl h-[700px] flex items-center justify-center z-10 px-4">
-        <AnimatePresence initial={false} custom={direction}>
-          <motion.div
-            key={currentSlide}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 }
-            }}
-            className="absolute w-full h-full"
-          >
-            {slides[currentSlide]}
-          </motion.div>
-        </AnimatePresence>
+      <div className="relative w-full max-w-7xl h-[85vh] flex items-center justify-center z-10 px-0 md:px-12 mt-10">
+        <div className="w-full h-full relative overflow-hidden bg-background">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div
+              key={currentSlide}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "tween", duration: 0.5, ease: [0.25, 1, 0.5, 1] },
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={1}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = swipePower(offset.x, velocity.x);
+
+                if (swipe < -swipeConfidenceThreshold) {
+                  nextSlide();
+                } else if (swipe > swipeConfidenceThreshold) {
+                  prevSlide();
+                }
+              }}
+              className="absolute w-full h-full cursor-grab active:cursor-grabbing"
+            >
+              {slides[currentSlide]}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
-      {/* Navigation Controls */}
-      <div className="absolute bottom-8 left-0 right-0 z-20 flex flex-col items-center gap-4">
-        <div className="flex items-center gap-6">
+      {/* Brutalist Navigation Controls */}
+      <div className="absolute bottom-0 left-0 w-full z-20 swiss-border-t bg-background">
+        <div className="max-w-7xl mx-auto flex">
           <button
             onClick={prevSlide}
             disabled={currentSlide === 0}
-            className={`p-3 rounded-full transition-all duration-300 flex items-center justify-center
+            className={`flex-1 py-4 uppercase font-bold tracking-widest text-sm flex items-center justify-center gap-2 transition-colors swiss-border-r
               ${currentSlide === 0 
-                ? "bg-slate-800/50 text-slate-600 cursor-not-allowed" 
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
+                ? "text-graphite/30 cursor-not-allowed bg-background" 
+                : "text-foreground hover:bg-foreground hover:text-background"
               }`}
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={16} /> Sebelumnya
           </button>
-
-          <div className="flex items-center gap-2">
-            {slides.map((_, idx) => (
-              <div 
-                key={idx} 
-                className={`transition-all duration-300 rounded-full cursor-pointer
-                  ${currentSlide === idx 
-                    ? "w-8 h-2 bg-gold" 
-                    : "w-2 h-2 bg-slate-600 hover:bg-slate-400"
-                  }`}
-                onClick={() => {
-                  setDirection(idx > currentSlide ? 1 : -1);
-                  setCurrentSlide(idx);
-                }}
-              />
-            ))}
+          
+          <div className="px-8 py-4 flex items-center justify-center font-mono text-sm font-bold bg-foreground text-background">
+            {String(currentSlide + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
           </div>
 
           <button
             onClick={nextSlide}
             disabled={currentSlide === slides.length - 1}
-            className={`p-3 rounded-full transition-all duration-300 flex items-center justify-center
+            className={`flex-1 py-4 uppercase font-bold tracking-widest text-sm flex items-center justify-center gap-2 transition-colors swiss-border-l
               ${currentSlide === slides.length - 1 
-                ? "bg-slate-800/50 text-slate-600 cursor-not-allowed" 
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
+                ? "text-graphite/30 cursor-not-allowed bg-background" 
+                : "text-foreground hover:bg-foreground hover:text-background"
               }`}
           >
-            <ChevronRight size={24} />
+            Selanjutnya <ChevronRight size={16} />
           </button>
         </div>
-        <p className="text-sm text-slate-500">
-          Gunakan panah keyboard (← / →) untuk navigasi
-        </p>
       </div>
     </div>
   );

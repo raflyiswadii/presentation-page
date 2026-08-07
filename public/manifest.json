@@ -1,0 +1,22 @@
+{
+  "name": "Laporan Penjualan Rio Iswadi",
+  "short_name": "Laporan Rio",
+  "description": "Laporan Penjualan Hatiga Indonesia - Semester 1 2026",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAF7",
+  "theme_color": "#FAFAF7",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo-icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/logo-icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
