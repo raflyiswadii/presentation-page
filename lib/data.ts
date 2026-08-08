@@ -10,7 +10,7 @@ export const reportData = {
   
   omset: {
     semester1: 2596899061,
-    targetTotal: 2600000000,
+    targetTotal: 26000000000,
     percentage: 10,
     targetPerMonth: 400000000,
     monthly: [

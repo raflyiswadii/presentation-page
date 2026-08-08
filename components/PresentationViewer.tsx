@@ -12,6 +12,7 @@ import Slide3NewCustomers from "./slides/Slide3NewCustomers";
 import Slide4Products from "./slides/Slide4Products";
 import Slide5Churn from "./slides/Slide5Churn";
 import Slide6Highlight from "./slides/Slide6Highlight";
+import Slide7Closing from "./slides/Slide7Closing";
 
 const slides = [
   <Slide1Intro key="s1" />,
@@ -19,7 +20,8 @@ const slides = [
   <Slide3NewCustomers key="s3" />,
   <Slide4Products key="s4" />,
   <Slide5Churn key="s5" />,
-  <Slide6Highlight key="s6" />
+  <Slide6Highlight key="s6" />,
+  <Slide7Closing key="s7" />
 ];
 
 const swipeConfidenceThreshold = 10000;
