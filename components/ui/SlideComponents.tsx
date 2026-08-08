@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function SlideContainer({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <div className={cn("w-full h-full flex flex-col p-4 md:p-8 lg:p-12", className)}>
+    <div className={cn("w-full h-full flex flex-col p-2 sm:p-3 md:p-5 lg:p-8", className)}>
       {children}
     </div>
   );

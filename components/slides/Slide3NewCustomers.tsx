@@ -17,7 +17,7 @@ export default function Slide3NewCustomers() {
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2">
           {/* Left Column - Large Typography */}
           <div className="swiss-border-r p-6 md:p-12 flex flex-col justify-between">
-            <h1 className="text-6xl md:text-8xl font-bold uppercase tracking-tighter leading-[0.9] mt-8">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.9] mt-4 md:mt-8">
               Ekspansi<br />
               <span className="text-hatiga-green">Jaringan.</span>
             </h1>
@@ -37,7 +37,7 @@ export default function Slide3NewCustomers() {
                 className="flex-1 swiss-border-b p-4 md:p-6 flex flex-col justify-center relative group hover:bg-foreground hover:text-background transition-colors duration-300"
               >
                 <div className="font-mono text-xs mb-1 md:mb-2 opacity-50">NO. {String(idx + 1).padStart(2, '0')}</div>
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-tighter truncate pr-8">
+                <h3 className="text-lg md:text-2xl lg:text-3xl font-bold uppercase tracking-tighter truncate pr-8">
                   {customer}
                 </h3>
                 {/* Arrow indicator that appears on hover */}

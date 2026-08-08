@@ -44,6 +44,6 @@ export const reportData = {
   },
   
   highlight: [
-    "HBSAG mcrol Healgen"
+    "HBsAg merek Healgen"
   ]
 };

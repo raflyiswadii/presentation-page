@@ -72,79 +72,77 @@ export default function PresentationViewer() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center relative overflow-hidden">
-      
-      {/* Global Header */}
-      <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-start z-20 pointer-events-none text-foreground">
-        <div className="flex gap-4 items-center">
-          <Image src="/logo-icon.jpg" alt="Hatiga Logo" width={48} height={48} className="rounded-full shadow-sm" />
-          <h1 className="font-bold uppercase tracking-tighter text-xl leading-tight mt-1">Laporan<br/>Penjualan.</h1>
+    <div className="h-screen min-h-0 bg-background text-foreground flex flex-col overflow-hidden">
+
+      {/* Global Header — flex-shrink-0 agar tidak ditekan konten */}
+      <div className="flex-shrink-0 w-full px-4 md:px-6 py-3 md:py-4 flex justify-between items-center z-20 text-foreground swiss-border-b">
+        <div className="flex gap-3 items-center">
+          <Image src="/logo-icon.jpg" alt="Hatiga Logo" width={36} height={36} className="rounded-full shadow-sm md:w-12 md:h-12" />
+          <h1 className="font-bold uppercase tracking-tighter text-base md:text-xl leading-tight">Laporan<br/>Penjualan.</h1>
         </div>
-        <div className="text-right font-mono text-sm uppercase mt-1">
+        <div className="text-right font-mono text-xs md:text-sm uppercase">
           {reportData.header.division} Div<br/>
           {reportData.header.area}
         </div>
       </div>
 
-      {/* Main Slide Area */}
-      <div className="relative w-full max-w-7xl h-[85vh] flex items-center justify-center z-10 px-0 md:px-12 mt-10">
-        <div className="w-full h-full relative overflow-hidden bg-background">
-          <AnimatePresence initial={false} custom={direction}>
-            <motion.div
-              key={currentSlide}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: "tween", duration: 0.5, ease: [0.25, 1, 0.5, 1] },
-              }}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={1}
-              onDragEnd={(e, { offset, velocity }) => {
-                const swipe = swipePower(offset.x, velocity.x);
+      {/* Main Slide Area — flex-1 mengisi sisa ruang yang tersedia */}
+      <div className="relative flex-1 min-h-0 w-full overflow-hidden">
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={currentSlide}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "tween", duration: 0.5, ease: [0.25, 1, 0.5, 1] },
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
 
-                if (swipe < -swipeConfidenceThreshold) {
-                  nextSlide();
-                } else if (swipe > swipeConfidenceThreshold) {
-                  prevSlide();
-                }
-              }}
-              className="absolute w-full h-full cursor-grab active:cursor-grabbing"
-            >
-              {slides[currentSlide]}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+              if (swipe < -swipeConfidenceThreshold) {
+                nextSlide();
+              } else if (swipe > swipeConfidenceThreshold) {
+                prevSlide();
+              }
+            }}
+            className="absolute w-full h-full cursor-grab active:cursor-grabbing"
+          >
+            {slides[currentSlide]}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Brutalist Navigation Controls */}
-      <div className="absolute bottom-0 left-0 w-full z-20 swiss-border-t bg-background">
-        <div className="max-w-7xl mx-auto flex">
+      {/* Navigation Controls — flex-shrink-0 agar selalu terlihat di bawah */}
+      <div className="flex-shrink-0 w-full z-20 swiss-border-t bg-background">
+        <div className="flex">
           <button
             onClick={prevSlide}
             disabled={currentSlide === 0}
-            className={`flex-1 py-4 uppercase font-bold tracking-widest text-sm flex items-center justify-center gap-2 transition-colors swiss-border-r
-              ${currentSlide === 0 
-                ? "text-graphite/30 cursor-not-allowed bg-background" 
+            className={`flex-1 py-3 md:py-4 uppercase font-bold tracking-widest text-xs md:text-sm flex items-center justify-center gap-2 transition-colors swiss-border-r
+              ${currentSlide === 0
+                ? "text-graphite/30 cursor-not-allowed bg-background"
                 : "text-foreground hover:bg-foreground hover:text-background"
               }`}
           >
             <ChevronLeft size={16} /> Sebelumnya
           </button>
-          
-          <div className="px-8 py-4 flex items-center justify-center font-mono text-sm font-bold bg-foreground text-background">
+
+          <div className="px-6 md:px-8 py-3 md:py-4 flex items-center justify-center font-mono text-sm font-bold bg-foreground text-background">
             {String(currentSlide + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
           </div>
 
           <button
             onClick={nextSlide}
             disabled={currentSlide === slides.length - 1}
-            className={`flex-1 py-4 uppercase font-bold tracking-widest text-sm flex items-center justify-center gap-2 transition-colors swiss-border-l
-              ${currentSlide === slides.length - 1 
-                ? "text-graphite/30 cursor-not-allowed bg-background" 
+            className={`flex-1 py-3 md:py-4 uppercase font-bold tracking-widest text-xs md:text-sm flex items-center justify-center gap-2 transition-colors swiss-border-l
+              ${currentSlide === slides.length - 1
+                ? "text-graphite/30 cursor-not-allowed bg-background"
                 : "text-foreground hover:bg-foreground hover:text-background"
               }`}
           >

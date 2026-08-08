@@ -26,7 +26,7 @@ export default function Slide6Highlight() {
             Highlight Product
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter text-center leading-tight z-10 text-balance">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter text-center leading-tight z-10 text-balance">
             {highlight[0]}
           </h1>
         </div>

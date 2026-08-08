@@ -18,7 +18,7 @@ export default function Slide1Intro() {
         
         {/* Main Title Area */}
         <div className="md:col-span-8 row-span-4 swiss-border-r swiss-border-b flex flex-col justify-end p-6 md:p-12 relative overflow-hidden group">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-bold uppercase tracking-tighter leading-[0.85] text-foreground z-10 transition-transform duration-700 origin-bottom-left group-hover:scale-105 break-words">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[6rem] font-bold uppercase tracking-tighter leading-[0.85] text-foreground z-10 transition-transform duration-700 origin-bottom-left group-hover:scale-105 break-words">
             {header.title.split(' ')[0]}<br />
             <span className="text-hatiga-green">{header.title.split(' ')[1]}</span>.
           </h1>
