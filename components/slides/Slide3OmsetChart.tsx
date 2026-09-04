@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell
 } from "recharts";
 
 export default function Slide3OmsetChart() {
@@ -15,7 +16,8 @@ export default function Slide3OmsetChart() {
     { name: "M 1", label: "Minggu I", value: 186191530 },
     { name: "M 2", label: "Minggu II", value: 110575300 },
     { name: "M 3", label: "Minggu III", value: 80600000 },
-    { name: "M 4", label: "Minggu IV", value: 220775500 },
+    { name: "M 4", label: "Minggu IV", value: 170825500 },
+    { name: "TOTAL", label: "Total Keseluruhan", value: 548192330 },
   ];
 
   const formatIDR = (val: number) => {
@@ -83,11 +85,17 @@ export default function Slide3OmsetChart() {
                 <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--color-background)', opacity: 0.5 }} />
                 <Bar
                   dataKey="value"
-                  fill="var(--color-accent)"
                   radius={[4, 4, 0, 0]}
                   barSize={60}
                   animationDuration={1500}
-                />
+                >
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.name === "TOTAL" ? "var(--color-secondary)" : "var(--color-accent)"}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>

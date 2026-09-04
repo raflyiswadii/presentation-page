@@ -3,7 +3,7 @@ import { motion, Variants } from "framer-motion";
 import { SlideContainer, SwissGrid } from "../ui/SlideComponents";
 import { reportData } from "@/lib/data";
 
-export default function Slide5Closing() {
+export default function Slide6Closing() {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {

@@ -6,10 +6,10 @@ export default function Slide2Omset() {
     { label: "Minggu I", value: 186191530 },
     { label: "Minggu II", value: 110575300 },
     { label: "Minggu III", value: 80600000 },
-    { label: "Minggu IV", value: 220775500 },
+    { label: "Minggu IV", value: 170825500 },
   ];
 
-  const total = 598142330;
+  const total = 548192330;
 
   const formatIDR = (val: number) => {
     return new Intl.NumberFormat('id-ID').format(val);
