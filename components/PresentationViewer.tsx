@@ -8,10 +8,12 @@ import { reportData } from "@/lib/data";
 import Image from "next/image";
 import Slide1Intro from "./slides/Slide1Intro";
 import Slide2Omset from "./slides/Slide2Omset";
+import Slide3OmsetChart from "./slides/Slide3OmsetChart";
 
 const slides = [
   <Slide1Intro key="s1" />,
-  <Slide2Omset key="s2" />
+  <Slide2Omset key="s2" />,
+  <Slide3OmsetChart key="s3" />
 ];
 
 const swipeConfidenceThreshold = 10000;
