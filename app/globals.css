@@ -1,18 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #FAFAF7; /* Bleached Bone */
-  --color-foreground: #082614; /* Dark Forest Green / Carbon */
-  --color-hatiga-green: #0E9856; /* Signature Accent */
-  --color-graphite: #737373; /* Gray / Sec Text */
-  --font-sans: var(--font-space-grotesk);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: #F3F6F3;
+  --color-secondary: #0E2116;
+  --color-accent: #2A4E35;
+  --color-background: #EBEDE9;
+  --color-surface: #F3F6F3;
+  --color-text-primary: #111827;
+  --color-text-secondary: #4B5563;
+  --color-border: #E5E7EB;
+
+  --font-display: var(--font-dm-sans);
+  --font-body: var(--font-playfair);
+  --font-mono: var(--font-jetbrains);
 }
 
 body {
   background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  color: var(--color-text-primary);
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
   user-select: none;
   -webkit-touch-callout: none;
@@ -24,23 +30,23 @@ body {
   -webkit-touch-callout: default;
 }
 
-/* Base utility for stark black borders */
+/* Base utility for borders */
 .swiss-border {
-  border: 1px solid var(--color-foreground);
+  border: 1px solid var(--color-border);
 }
 
 .swiss-border-b {
-  border-bottom: 1px solid var(--color-foreground);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .swiss-border-r {
-  border-right: 1px solid var(--color-foreground);
+  border-right: 1px solid var(--color-border);
 }
 
 .swiss-border-t {
-  border-top: 1px solid var(--color-foreground);
+  border-top: 1px solid var(--color-border);
 }
 
 .swiss-border-l {
-  border-left: 1px solid var(--color-foreground);
+  border-left: 1px solid var(--color-border);
 }
