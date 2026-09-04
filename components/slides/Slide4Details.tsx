@@ -88,7 +88,7 @@ export default function Slide4Details() {
 
   return (
     <SlideContainer>
-      <SwissGrid className="grid grid-cols-1 md:grid-cols-12 grid-rows-6">
+      <SwissGrid className="grid grid-cols-1 md:grid-cols-12 grid-rows-6 bg-background">
         <div className="md:col-span-12 row-span-1">
           <SwissHeader
             title="Rincian Transaksi"
@@ -96,30 +96,45 @@ export default function Slide4Details() {
           />
         </div>
 
-        <div className="md:col-span-12 row-span-5 p-6 md:p-12 flex flex-col justify-start bg-surface overflow-y-auto">
-          <div className="w-full mx-auto">
-            <table className="w-full text-left border-collapse text-sm md:text-base">
-              <thead className="sticky top-0 bg-surface shadow-[0_1px_0_var(--color-border)] z-10">
-                <tr className="text-text-secondary font-mono uppercase tracking-wider font-semibold">
-                  <th className="py-3 px-2">PIC</th>
-                  <th className="py-3 px-2">Rumah Sakit</th>
-                  <th className="py-3 px-2">Tanggal</th>
-                  <th className="py-3 px-2">No.</th>
-                  <th className="py-3 px-2 text-right">Nominal</th>
-                </tr>
-              </thead>
-              <tbody className="font-mono">
+        <div className="md:col-span-12 row-span-5 p-4 md:p-8 flex flex-col justify-start overflow-hidden">
+          <div className="w-full max-w-5xl mx-auto h-full flex flex-col bg-surface border border-border/60 rounded-xl shadow-sm overflow-hidden">
+
+            {/* Custom Table Header outside of scrollable area to prevent overlapping bugs */}
+            <div className="w-full bg-background border-b border-border text-text-secondary font-mono text-xs uppercase tracking-widest font-semibold flex items-center shrink-0 shadow-sm z-10">
+              <div className="w-16 md:w-24 px-4 py-3">PIC</div>
+              <div className="flex-1 px-4 py-3">Rumah Sakit</div>
+              <div className="w-20 md:w-28 px-4 py-3">Tanggal</div>
+              <div className="w-32 md:w-40 px-4 py-3">No. Transaksi</div>
+              <div className="w-32 md:w-40 px-4 py-3 text-right">Nominal</div>
+            </div>
+
+            {/* Scrollable Table Body */}
+            <div className="w-full flex-1 overflow-y-auto bg-surface">
+              <div className="w-full flex flex-col">
                 {transactionData.map((row, i) => (
-                  <tr key={i} className="border-b border-border/30 hover:bg-black/5 transition-colors">
-                    <td className="py-3 px-2 text-text-primary">{row.pic}</td>
-                    <td className="py-3 px-2 text-text-primary font-display font-medium text-sm md:text-base truncate max-w-[150px] md:max-w-none">{row.hospital}</td>
-                    <td className="py-3 px-2 text-text-secondary">{row.date}</td>
-                    <td className="py-3 px-2 text-text-secondary text-xs md:text-sm">{row.no}</td>
-                    <td className="py-3 px-2 text-right text-text-primary font-medium">{formatIDR(row.amount)}</td>
-                  </tr>
+                  <div key={i} className="flex items-center border-b border-border/40 hover:bg-black/5 transition-colors group">
+                    <div className="w-16 md:w-24 px-4 py-4">
+                      <span className="font-mono text-xs bg-border/50 text-text-secondary px-2 py-1 rounded">
+                        {row.pic}
+                      </span>
+                    </div>
+                    <div className="flex-1 px-4 py-4 text-text-primary font-body text-sm md:text-base leading-snug">
+                      {row.hospital}
+                    </div>
+                    <div className="w-20 md:w-28 px-4 py-4 font-mono text-text-secondary text-xs md:text-sm">
+                      {row.date}
+                    </div>
+                    <div className="w-32 md:w-40 px-4 py-4 font-mono text-text-secondary text-xs md:text-sm">
+                      {row.no}
+                    </div>
+                    <div className="w-32 md:w-40 px-4 py-4 text-right font-mono font-medium text-text-primary text-sm md:text-base group-hover:text-accent transition-colors">
+                      {formatIDR(row.amount)}
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </div>
+
           </div>
         </div>
       </SwissGrid>
