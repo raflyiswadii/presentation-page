@@ -1,8 +1,8 @@
 export const reportData = {
   header: {
     title: "Laporan Penjualan",
-    semester: "Semester 1",
-    period: "Januari - Juli 2026",
+    semester: "Semester 2",
+    period: "Bulan Agustus 2026",
     division: "Marketing",
     area: "Lampung 1",
     author: "Rio Iswadi",

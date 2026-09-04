@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Laporan Penjualan Rio Iswadi",
-  description: "Semester 1 (Januari - Juli 2026)",
+  description: "Semester 2 (Bulan Agustus 2026)",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
