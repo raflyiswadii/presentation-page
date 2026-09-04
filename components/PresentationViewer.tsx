@@ -10,12 +10,14 @@ import Slide1Intro from "./slides/Slide1Intro";
 import Slide2Omset from "./slides/Slide2Omset";
 import Slide3OmsetChart from "./slides/Slide3OmsetChart";
 import Slide4Details from "./slides/Slide4Details";
+import Slide5Closing from "./slides/Slide5Closing";
 
 const slides = [
   <Slide1Intro key="s1" />,
   <Slide2Omset key="s2" />,
   <Slide3OmsetChart key="s3" />,
-  <Slide4Details key="s4" />
+  <Slide4Details key="s4" />,
+  <Slide5Closing key="s5" />
 ];
 
 const swipeConfidenceThreshold = 10000;
